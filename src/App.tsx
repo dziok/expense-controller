@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AddExpense } from './addexpense/Addexpense.component'
 import { ExpenseList } from './expenseList/ExpenseList.component'
-import { SelectChangeEvent } from '@mui/material/Select'
 import { ExpenseStatistics } from './ExpenseStatistics/ExpenseStatistics.component'
 import { useAppStyle } from './App.style'
 import { ExpenseTypes } from './constants/expenseType'
@@ -11,20 +10,15 @@ export type DataProps = {
   day: number,
   name: string,
   type: ExpenseTypes,
-  value: string
+  value: string,
+  time: number
 }
-type StatisticsList = Record<ExpenseTypes, DataProps[]>
 
 export const App = () => {
   const [data, setData] = useState<DataProps[]>([])
-  const [nameValue, setNameValue] = useState('')
-  const [numberValue, setNumberValue] = useState('')
-  const [typeValue, setTypeValue] = useState<ExpenseTypes | ''>('')
   const [valueError, setValueError] = useState(false)
   const [typeError, setTypeError] = useState(false)
   const classes = useAppStyle()
-
-  // const STATUCADSDFSDF = data.filter(expense => expense.type === SELECTED_TYPE)
 
   useEffect(() => {
     const newData = localStorage.getItem('data1')
@@ -33,100 +27,59 @@ export const App = () => {
     } else {
       setData(JSON.parse(newData))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     localStorage.setItem('data1', JSON.stringify(data))
   }, [data])
 
-  const nameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNameValue(e.target.value)
-  }
-  const numberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNumberValue(e.target.value)
-  }
-  const typeChange = (e: SelectChangeEvent) => {
-    setTypeValue(e.target.value as ExpenseTypes)
-  }
   const deleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e.target, 'ytrdf')
+    setData(data.filter((item) => { return item.time !== Number(e.currentTarget.parentNode?.parentElement?.id) }))
   }
-  const handleClick = () => {
+
+  const handleClick = (nameValue: string, numberValue: string, typeValue: ExpenseTypes | '') => {
+    console.log(typeError, valueError, typeValue, numberValue, nameValue)
     if (numberValue !== '' && typeValue) {
       const date = new Date()
-      const currentDate = String(date.getDate() + ':' + (date.getMonth() + 1) + ':' + date.getFullYear())
+      const currentDate = String(date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear())
       const currentDay = Number(date.getDate())
+      const currentTime = Number(date.getTime())
 
       setValueError(false)
       setTypeError(false)
-      setData(data => [...data, {
-        'name': nameValue,
-        'value': numberValue,
-        'type': typeValue,
-        'date': currentDate,
-        'day': currentDay
-      }])
-
-      setNameValue('')
-      setNumberValue('')
-      setTypeValue('')
-
+      if (nameValue === "") {
+        setData(data => [...data, {
+          'name': '[unnamed]',
+          'value': numberValue,
+          'type': typeValue,
+          'date': currentDate,
+          'day': currentDay,
+          'time': currentTime
+        }])
+      }
+      else {
+        setData(data => [...data, {
+          'name': nameValue,
+          'value': numberValue,
+          'type': typeValue,
+          'date': currentDate,
+          'day': currentDay,
+          'time': currentTime
+        }])
+      }
 
     }
     else {
       if (numberValue === "") setValueError(true)
-      if (typeValue) setTypeError(true)
+      if (!typeValue) setTypeError(true)
     }
   }
-
-  // useEffect(() => {
-  //   data.map((item, index) => {
-  //     if (statisticsList[item.type].length == 0) {
-  //       console.log('zrób pusty')
-  //       // statisticsList[item.type].push({ 'value': Number(item.value), 'date': item.day })
-  //       setStatisticsList(statisticsList => ({
-  //         ...statisticsList, [item.type]: [{
-  //           'value': item.value,
-  //           'date': String(item.day),
-  //           'day': item.day,
-  //           'name': item.name,
-  //           'type': item.type
-  //         }]
-  //       }))
-  //     }
-  //     else {
-  //       if (statisticsList[item.type][statisticsList[item.type].length - 1].day === item.day) {
-  //         console.log('dodaj')
-  //         // statisticsList[item.type][statisticsList[item.type].length - 1].value += Number(item.value)
-  //         setStatisticsList(statisticsList => ({
-  //           ...statisticsList, [item.type]: [{
-  //             'value': Number(statisticsList[item.type][statisticsList[item.type].length - 1].value) + Number(item.value),
-  //             'date': String(item.day),
-  //             'day': item.day,
-  //             'name': item.name,
-  //             'type': item.type
-  //           }]
-  //         }))
-  //       }
-  //       else {
-  //         console.log('zrób nowy')
-  //         // statisticsList[item.type].push({ 'value': Number(item.value), 'date': item.day })
-  //       }
-  //     }
-  //     console.log(statisticsList)
-  //   })
-  // }, [data])
 
   return (
     <div className={classes.appForm} >
       <div className={classes.topContainer}>
         <AddExpense
-          typeChange={typeChange}
-          numberChange={numberChange}
-          nameChange={nameChange}
-          nameValue={nameValue}
-          numberValue={numberValue}
-          typeValue={typeValue}
           handleClick={handleClick}
           valueError={valueError}
           typeError={typeError}

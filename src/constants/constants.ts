@@ -1,0 +1,1 @@
+export const DAY = 100 * 60 * 60 * 24

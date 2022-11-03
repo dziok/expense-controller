@@ -1,42 +1,63 @@
 import { makeStyles, createStyles } from '@mui/styles';
 
-export const useAddExpenseStyle = makeStyles(({ palette,}) => createStyles(({
+export const useAddExpenseStyle = makeStyles(({ palette, breakpoints }) => createStyles(({
     addExpenseForm: {
-        borderRadius: '20px',
-        width: '30%',
+        width: '15%',
         backgroundColor: palette.secondary.main,
-        marginTop: '20px',
+        [breakpoints.down('md')]: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            minHeight: '100px',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
+        },
     },
     input: {
-        width: '250px',
-     //   backgroundColor: palette.secondary.dark,
+        width: '13vw',
         borderRadius: '5px',
+        [breakpoints.down('md')]: {
+            width: '30vw',
+        },
     },
     button: {
-        padding: '10px',
-        borderRadius: '10px',
-        marginTop: '20px',
-        width: '100px',
+        width: '60px',
+        height: '40px',
+        borderRadius: '100px',
         backgroundColor: palette.primary.main,
+        margin: '20px',
         '&:hover': {
             backgroundColor: palette.primary.dark
+        },
+        [breakpoints.down('md')]: {
+            width: '80px',
+            height: '40px',
+            marginBottom: '-30px'
         },
     },
     header: {
         width: '100%',
-        backgroundColor: palette.secondary.dark ,
-        borderRadius: '20px 20px 0 0',
         display: 'flex',
         justifyContent: 'center',
-        padding: '5% 0 5% 0'
+        padding: '5% 0 5% 0',
+        [breakpoints.down('md')]: {
+            display: 'none'
+        },
+
     },
-    inputForm:{
+    inputForm: {
         width: '100%',
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        height: '80%',
-        justifyContent: 'space-evenly',
-
+        height: '50%',
+        justifyContent: 'space-between',
+        [breakpoints.down('md')]: {
+            flexDirection: 'row',
+            alignItems: 'baseline',
+            width: '100%',
+            justifyContent: 'space-around',
+            height: 'auto',
+        },
     }
 })))

@@ -1,32 +1,31 @@
-import { makeStyles, createStyles } from '@mui/styles';
+import { makeStyles, createStyles } from '@mui/styles'
 
-export const useExpenseListStyle = makeStyles(({ palette }) => createStyles(({
-    expenseListForm:{
-        width: '62.5%',
-        height: '450px',
-        marginTop: '20px',
-        backgroundColor: palette.secondary.main,
-        borderRadius: '20px',
-        display: 'flex',
-        overflowY: 'scroll',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
+
+export const useExpenseListStyle = makeStyles(({ palette, breakpoints }) => createStyles(({
+    expenseListForm: {
+        width: '84%',
+        backgroundColor: palette.secondary.light,
+        [breakpoints.down('md')]: {
+            width: '100%',
+            height: '100%',
+        },
     },
-    expense: {
-        padding: '10px',
-        margin: '15px 15px 0 15px',
-        backgroundColor: palette.secondary.dark,
-        borderRadius: '10px',
-        width: '45%',
-        height: '25px',
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    header:{
+
+    header: {
         width: '100%',
         height: '70px',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
-    }
+        alignContent: 'center',
+    },
+
+    expenseDetails: {
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'left',
+        padding: '5px',
+        width: '20%',
+        height: '100%',
+        borderRadius: '5px',
+    },
 })))

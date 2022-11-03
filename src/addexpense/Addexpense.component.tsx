@@ -1,29 +1,39 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useAddExpenseStyle } from './AddExpense.style'
-import { MenuItem, FormControl, FormHelperText, TextField, Select, SelectChangeEvent, Typography, Button, InputLabel, InputAdornment } from '@mui/material'
+import { MenuItem, FormControl, FormHelperText, TextField, Select, Typography, Button, InputLabel, InputAdornment, SelectChangeEvent } from '@mui/material'
 import { expenseType, ExpenseTypes } from '../constants/expenseType'
+import { NameValueProps } from './AddExpanse.types'
 
-type nameValueProps = {
-    handleClick: React.MouseEventHandler<HTMLButtonElement>,
-    typeChange: (e: SelectChangeEvent) => void,
-    numberChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    nameChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    nameValue: string,
-    numberValue: string,
-    typeValue: ExpenseTypes | '',
-    valueError: boolean,
-    typeError: boolean
-}
-
-export const AddExpense = ({ typeValue, nameValue, numberValue, nameChange, typeChange, numberChange, handleClick, valueError, typeError }: nameValueProps) => {
+export const AddExpense = ({ handleClick, valueError, typeError }: NameValueProps) => {
     const classes = useAddExpenseStyle()
+    const [nameValue, setNameValue] = useState('')
+    const [numberValue, setNumberValue] = useState('')
+    const [typeValue, setTypeValue] = useState<ExpenseTypes | ''>('')
+
+    const nameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setNameValue(e.target.value)
+    }
+    const numberChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setNumberValue(e.target.value)
+    }
+    const typeChange = (e: SelectChangeEvent) => {
+        setTypeValue(e.target.value as ExpenseTypes)
+        console.log(typeValue)
+    }
+
+    const handleSubmit = () => {
+        handleClick(nameValue, numberValue, typeValue)
+        setTypeValue('')
+        setNameValue('')
+        setNumberValue('')
+    }
 
     return (
         <div className={classes.addExpenseForm} >
-            <div className={classes.header}><Typography variant='h4' >Add Expense</Typography></div>
+            <div className={classes.header}><Typography variant='h5' >Add Expense</Typography></div>
             <div className={classes.inputForm}>
 
-                <TextField focused size="small" variant='outlined' label="name" value={nameValue} onChange={nameChange} className={classes.input} />
+                <TextField name='expenseName' size="small" variant='outlined' label="name" value={nameValue} onChange={nameChange} className={classes.input} />
                 <TextField helperText="*required" error={valueError} size="small" variant='outlined' type='number' label="value"
                     value={numberValue} onChange={numberChange} className={classes.input}
                     InputProps={{
@@ -47,11 +57,11 @@ export const AddExpense = ({ typeValue, nameValue, numberValue, nameChange, type
                         ))}
                     </Select>
                     <FormHelperText error={typeError}>*required</FormHelperText>
-                    <Button className={classes.button} variant='outlined' color='secondary' onClick={handleClick}>
-                        Add
-                    </Button>
                 </FormControl>
             </div>
-        </div>
+            <Button className={classes.button} variant='outlined' color='secondary' onClick={handleSubmit}>
+                +
+            </Button>
+        </div >
     )
 } 
