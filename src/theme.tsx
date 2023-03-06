@@ -9,8 +9,8 @@ declare module '@mui/styles/defaultTheme' {
 const baseTheme = createTheme({
     palette: {
         primary: {
-            main: '#266799',
-            dark: '#1c4c70',
+            main: '#4579a1',
+            dark: '#2c4e69',
         },
         secondary: {
             main: '#f2f2f2',
@@ -46,7 +46,7 @@ const theme = createTheme({
                     fontWeight: 'bold'
                 },
                 stickyHeader: {
-                    backgroundColor: baseTheme.palette.primary.main,
+                    backgroundColor: baseTheme.palette.primary.dark,
 
                 }
             }

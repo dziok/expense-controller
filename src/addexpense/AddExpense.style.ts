@@ -1,4 +1,4 @@
-import { makeStyles, createStyles } from '@mui/styles';
+import { makeStyles, createStyles } from '@mui/styles'
 
 export const useAddExpenseStyle = makeStyles(({ palette, breakpoints }) => createStyles(({
     addExpenseForm: {
@@ -8,7 +8,7 @@ export const useAddExpenseStyle = makeStyles(({ palette, breakpoints }) => creat
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            minHeight: '100px',
+            minHeight: '110px',
             alignItems: 'center',
             justifyContent: 'space-evenly',
         },
@@ -27,12 +27,12 @@ export const useAddExpenseStyle = makeStyles(({ palette, breakpoints }) => creat
         backgroundColor: palette.primary.main,
         margin: '20px',
         '&:hover': {
-            backgroundColor: palette.primary.dark
+            backgroundColor: palette.primary.dark,
         },
         [breakpoints.down('md')]: {
             width: '80px',
             height: '40px',
-            marginBottom: '-30px'
+            margin: '0px',
         },
     },
     header: {
